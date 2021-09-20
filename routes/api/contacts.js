@@ -13,7 +13,7 @@ router.post('/', validation(contactSchema),controllers.addNewContact);
 
 router.delete('/:contactId', controllers.deleteContact);
 
-router.patch('/:contactId', validation(contactSchema), controllers.getUpdateContact);
+router.put('/:contactId', validation(contactSchema), controllers.getUpdateContact);
 
 
 module.exports = router;
