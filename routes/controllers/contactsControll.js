@@ -1,6 +1,5 @@
 const contacts = require('../../model/index');
 
-
 const addNewContact = async (req, res, next) => {
     try {
     const data = await contacts.addContact(req.body);
@@ -26,6 +25,39 @@ const getContactsList = async (req, res, next) => {
         next(error);
     }
 };
+
+const getFavoritesContacts = async (req, res, next) => {
+    try {
+        const data = await contacts.favoritesContacts();
+        if (data) {
+            res.json({ status: 'succcess', code: 200, payload: { data } })
+        };
+        return res.status(404).json({ status: 'error', code: 404, message: 'Not found' });
+
+    }
+    catch (error) {
+        next(error);
+    }
+};
+
+const getUpdateStatusContact = async (req, res, next) => {
+    try {
+        const data = await contacts.updateStatusContact(req.params.contactId, req.body);
+
+        if (data) {
+            if (!data.favorite) {
+                console.log("missing field favorite");
+            };
+
+            res.json({ status: 'succcess', code: 200, payload: { data} })
+        };
+        return res.status(404).json({ status: 'error', code: 404, message: 'Not found' });
+    }
+    catch (error) {
+        next(error);
+    }
+};
+
 
 const contactByid = async (req, res, next) => {
     try {
@@ -65,11 +97,13 @@ const getUpdateContact = async (req, res, next) => {
     }
 };
 
-module.exports = {
-    addNewContact,
-    getContactsList,
-    contactByid,
-    deleteContact,
-    getUpdateContact
+    module.exports = {
+        addNewContact,
+        getContactsList,
+        getFavoritesContacts,
+        getUpdateStatusContact,
+        contactByid,
+        deleteContact,
+        getUpdateContact
     
-}
+    };

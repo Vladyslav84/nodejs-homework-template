@@ -1,12 +1,12 @@
 const express = require('express')
 const logger = require('morgan')
-const cors = require('cors')
-
+const cors = require('cors');
+require('dotenv').config();
 const contactsRouter = require('./routes/api/contacts')
-
 const app = express()
-
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short'
+
+// DB_HOST=mongodb+srv://Vladyslav:mPmkcV43UXi12vn4@cluster0.qg5tp.mongodb.net/db-contacts?retryWrites=true&w=majority
 
 app.use(logger(formatsLogger));
 app.use(cors());

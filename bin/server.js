@@ -1,8 +1,13 @@
 const app = require('../app');
 require('dotenv').config();
+const db = require('../model/db');
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
+db.then(() => {
+    app.listen(PORT, () => {
   console.log(`Server running. Use our API on port: ${PORT}`);
 });
+}).catch((e) => {
+    console.log(`Error: ${e.message}`);
+})
