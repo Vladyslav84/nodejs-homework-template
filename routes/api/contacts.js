@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const  controllers  = require('../controllers/contactsControll');
-const contactSchema = require('../schema/contactsSchema');
+const {contactSchema, updateStatusContactSchema} = require('../schema/contactsSchema');
 const validation = require('../validation/validation');
 
 // const DB_HOST = "mongodb+srv://Vladyslav:mPmkcV43UXi12vn4@cluster0.qg5tp.mongodb.net/db-contacts?retryWrites=true&w=majority";
@@ -14,6 +14,6 @@ router.get('/:contactId', controllers.contactByid);
 router.post('/', validation(contactSchema),controllers.addNewContact);
 router.delete('/:contactId', controllers.deleteContact);
 router.put('/:contactId', validation(contactSchema), controllers.getUpdateContact);
-router.patch('/:contactId/favorite', validation(contactSchema), controllers.getUpdateStatusContact);
+router.patch('/:contactId/favorite', validation(updateStatusContactSchema), controllers.getUpdateStatusContact);
 
 module.exports = router;

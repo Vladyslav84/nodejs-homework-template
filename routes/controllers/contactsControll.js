@@ -19,7 +19,6 @@ const getContactsList = async (req, res, next) => {
             res.json({ status: 'succcess', code: 200, payload: { data } })
         };
         return res.status(404).json({ status: 'error', code: 404, message: 'Not found' });
-
     }
     catch (error) {
         next(error);
@@ -43,7 +42,7 @@ const getFavoritesContacts = async (req, res, next) => {
 const getUpdateStatusContact = async (req, res, next) => {
     try {
         const data = await contacts.updateStatusContact(req.params.contactId, req.body);
-
+        
         if (data) {
             if (!data.favorite) {
                 console.log("missing field favorite");

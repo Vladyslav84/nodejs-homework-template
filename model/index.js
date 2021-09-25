@@ -3,7 +3,7 @@ const Contact = require('./schema');
 
 const listContacts = async () => {
   try {
-    return await Contact.find({});
+    return await Contact.find({}," name email phone favorite");
   } catch (error) {
     console.log(error.message);
   }
@@ -11,7 +11,7 @@ const listContacts = async () => {
 
 const getContactById = async (contactId) => {
   try {
-    return await Contact.findOne({_id: contactId})
+    return await Contact.findOne({_id: contactId}," name email phone favorite")
   } catch (error) {
     console.log(error.message);
   }
@@ -45,10 +45,11 @@ try {
 
 };
 const updateStatusContact = async (contactId, body) => {
-try {
+  try {
+  const {favorite} = body;
     return await Contact.findByIdAndUpdate(
     { _id: contactId },
-    { ...body },
+    { favorite },
     {new:true})
 } catch (error) {
   console.log(error.message);
@@ -57,7 +58,7 @@ try {
 
 const favoritesContacts = async () => {
   try {
-    return Contact.find({ favorite: true });
+    return Contact.find({ favorite: true }," name email phone favorite");
   } catch (error) {
     console.log(error.message);
   }
