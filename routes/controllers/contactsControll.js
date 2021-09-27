@@ -16,7 +16,7 @@ const getContactsList = async (req, res, next) => {
     try {
         const data = await contacts.listContacts();
         if (data) {
-            res.json({ status: 'succcess', code: 200, payload: { data } })
+           return res.json({ status: 'succcess', code: 200, payload: { data } })
         };
         return res.status(404).json({ status: 'error', code: 404, message: 'Not found' });
     }
@@ -29,7 +29,7 @@ const getFavoritesContacts = async (req, res, next) => {
     try {
         const data = await contacts.favoritesContacts();
         if (data) {
-            res.json({ status: 'succcess', code: 200, payload: { data } })
+           return res.json({ status: 'succcess', code: 200, payload: { data } })
         };
         return res.status(404).json({ status: 'error', code: 404, message: 'Not found' });
 
@@ -48,7 +48,7 @@ const getUpdateStatusContact = async (req, res, next) => {
                 console.log("missing field favorite");
             };
 
-            res.json({ status: 'succcess', code: 200, payload: { data} })
+            return res.json({ status: 'succcess', code: 200, payload: { data} })
         };
         return res.status(404).json({ status: 'error', code: 404, message: 'Not found' });
     }
