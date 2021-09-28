@@ -1,6 +1,5 @@
 const Contact = require('./schema');
 
-
 const listContacts = async () => {
   try {
     return await Contact.find({}," name email phone favorite");
