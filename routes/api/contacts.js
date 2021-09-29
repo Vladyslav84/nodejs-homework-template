@@ -10,12 +10,12 @@ const passport = require('passport');
 
 // parol: mPmkcV43UXi12vn4. Login: Vladyslav
 
-router.get('/', passport.authenticate('jwt', { session: false }), controllers.getContactsList);
-router.get('/favorites', controllers.getFavoritesContacts);
-router.get('/:contactId', controllers.contactByid);
-router.post('/', validation(contactSchema),controllers.addNewContact);
-router.delete('/:contactId', controllers.deleteContact);
-router.put('/:contactId', validation(contactSchema), controllers.getUpdateContact);
-router.patch('/:contactId/favorite', validation(updateStatusContactSchema), controllers.getUpdateStatusContact);
+router.get('/', guard,guard, controllers.getContactsList);
+router.get('/favorites',guard, passport.authenticate('jwt', { session: false }), controllers.getFavoritesContacts);
+router.get('/:contactId',guard, controllers.contactByid);
+router.post('/',guard, validation(contactSchema),controllers.addNewContact);
+router.delete('/:contactId',guard, controllers.deleteContact);
+router.put('/:contactId',guard, validation(contactSchema), controllers.getUpdateContact);
+router.patch('/:contactId/favorite',guard, validation(updateStatusContactSchema), controllers.getUpdateStatusContact);
 
 module.exports = router;

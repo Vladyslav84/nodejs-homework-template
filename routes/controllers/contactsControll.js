@@ -13,6 +13,7 @@ const addNewContact = async (req, res, next) => {
 };
 
 const getContactsList = async (req, res, next) => {
+    console.log(res.locals.user);
     try {
         const data = await contacts.listContacts();
         if (data) {

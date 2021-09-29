@@ -9,6 +9,7 @@ const findUserById = async (id) => {
 };
 
 const findUserByEmail = async (email) => {
+  console.log('findUserByEmail');
   try {
     return await User.findOne({email});
   } catch (error) {
@@ -17,6 +18,7 @@ const findUserByEmail = async (email) => {
 };
 
 const createUser = async (body) => {
+  console.log('createUser');
   try {
       const user = new User(body);
       return await user.save();

@@ -6,6 +6,7 @@ require('dotenv').config();
 const SEC_KEY = process.env.SEC_KEY;
 
 const signUp = async (req, res, next) => {
+  console.log('signUp');
     try {
         const user = await Users.findUserByEmail(req.body.email);
     if (user) {
