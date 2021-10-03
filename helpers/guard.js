@@ -16,8 +16,8 @@ const guard = (req, res, next) => {
                 message: "Not authorized"
             });
         }
-        req.user = user; // 
-        res.locals.user = user
+          
+        res.locals.user = user; // req.user = user; так зазвичай роблять. 
         return next();
         
     })(req, res, next)

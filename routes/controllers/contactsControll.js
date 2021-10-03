@@ -1,25 +1,28 @@
-const contacts = require('../../model/index');
+const contacts = require('../../repositories/index');
 
 const addNewContact = async (req, res, next) => {
     try {
-    const data = await contacts.addContact(req.body);
-    if (data) {
-      return res.json({ status: 'succcess', code: 201, payload: { data } });
+        const userId = res.locals.user.id;
+        console.log(userId);
+    const data = await contacts.addContact(userId, req.body);
+        if (data) {
+         return res.json({ status: 'succcess', code: 201, payload: { data, } });
     };
-    return res.status(404).json({ status: 'error', code: 404, message: 'Not found' });
+    return res.status(404).json({ status: 'error', code: 404, message: 'Not found1' });
   } catch (error) {
     next(error)
   }
 };
 
 const getContactsList = async (req, res, next) => {
-    console.log(res.locals.user);
+    console.log(res.locals.user.id);
     try {
-        const data = await contacts.listContacts();
+        const userId = res.locals.user.id;
+        const {docs: data, ...rest} = await contacts.listContacts(userId, req.query);
         if (data) {
-           return res.json({ status: 'succcess', code: 200, payload: { data } })
+           return res.json({ status: 'succcess', code: 200, payload: { data, ...rest } })
         };
-        return res.status(404).json({ status: 'error', code: 404, message: 'Not found' });
+        return res.status(404).json({ status: 'error', code: 404, message: 'Not found1' });
     }
     catch (error) {
         next(error);
@@ -27,10 +30,12 @@ const getContactsList = async (req, res, next) => {
 };
 
 const getFavoritesContacts = async (req, res, next) => {
+      
     try {
-        const data = await contacts.favoritesContacts();
+        const userId = res.locals.user.id;
+        const {docs: data, ...rest} = await contacts.favoritesContacts(userId);
         if (data) {
-           return res.json({ status: 'succcess', code: 200, payload: { data } })
+           return res.json({ status: 'succcess', code: 200, payload: { data, ...rest } })
         };
         return res.status(404).json({ status: 'error', code: 404, message: 'Not found' });
 
@@ -41,8 +46,10 @@ const getFavoritesContacts = async (req, res, next) => {
 };
 
 const getUpdateStatusContact = async (req, res, next) => {
+   
     try {
-        const data = await contacts.updateStatusContact(req.params.contactId, req.body);
+        const userId = res.locals.user.id;
+        const data = await contacts.updateStatusContact( userId,req.params.contactId, req.body);
         
         if (data) {
             if (!data.favorite) {
@@ -60,8 +67,10 @@ const getUpdateStatusContact = async (req, res, next) => {
 
 
 const contactByid = async (req, res, next) => {
+   
     try {
-        const data = await contacts.getContactById(req.params.contactId);
+        const userId = res.locals.user.id;
+        const data = await contacts.getContactById( userId,req.params.contactId);
     if (data) {
             return res.json({ status: 'succcess', code: 200, payload: { data } });
         };
@@ -72,9 +81,10 @@ const contactByid = async (req, res, next) => {
     }
 };
 const deleteContact = async (req, res, next) => {
-    try {
-        const data = await contacts.removeContact(req.params.contactId);
-        if (data.length !== 0) {
+        try {
+         const userId = res.locals.user.id
+            const data = await contacts.removeContact(userId, req.params.contactId);
+        if (data) {
             return res.json({ status: 'succcess', code: 200, payload: { data } });
         };
         return res.status(404).json({ status: 'error', code: 404, message: 'Not found' });
@@ -85,8 +95,10 @@ const deleteContact = async (req, res, next) => {
 };
 
 const getUpdateContact = async (req, res, next) => {
+   
     try {
-        const data = await contacts.updateContact(req.params.contactId, req.body);
+         const userId = res.locals.user.id
+        const data = await contacts.updateContact( userId,req.params.contactId, req.body);
         if (data) {
             return res.json({ status: 'succcess', code: 200, payload: { data } });
         };

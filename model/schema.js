@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
-const { Schema, model, SchemaTypes } = mongoose;
+const { Schema, model } = mongoose;
+const mongoosePaginate = require('mongoose-paginate-v2');
 
 const contactSchema = Schema({
-
+ 
   name: {
     type: String,
     required: [true, 'Set name for contact'],
@@ -18,10 +19,12 @@ const contactSchema = Schema({
     default: false,
   },
   owner: {
-    type: SchemaTypes.ObjectId, ref: 'user'
+    type: Schema.Types.ObjectId,
+    ref: 'user'
     },
-},{versionKey: false, timestamps: true});
+}, { versionKey: false, timestamps: true });
 
+contactSchema.plugin(mongoosePaginate);
   
 const Contact = model('contact', contactSchema)
 

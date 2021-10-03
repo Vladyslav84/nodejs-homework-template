@@ -9,7 +9,7 @@ const findUserById = async (id) => {
 };
 
 const findUserByEmail = async (email) => {
-  console.log('findUserByEmail');
+
   try {
     return await User.findOne({email});
   } catch (error) {
@@ -18,7 +18,7 @@ const findUserByEmail = async (email) => {
 };
 
 const createUser = async (body) => {
-  console.log('createUser');
+
   try {
       const user = new User(body);
       return await user.save();
@@ -35,9 +35,33 @@ const updateToken = async (id, token) => {
   }
 };
 
+const findUserByToken = async (token) => {
+
+  try {
+    return await User.findOne({token});
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+const updateSubscription = async (userId, body) => {
+
+try {
+    return await User.findByIdAndUpdate(
+    { _id: userId },
+    { ...body },
+    {new:true})
+} catch (error) {
+  console.log(error.message);
+}
+
+};
+
 module.exports = {
     findUserById,
     findUserByEmail,
     createUser,
-    updateToken
-};
+    updateToken,
+    findUserByToken,
+    updateSubscription
+    };

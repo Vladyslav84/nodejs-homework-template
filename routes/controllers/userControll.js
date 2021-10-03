@@ -6,7 +6,6 @@ require('dotenv').config();
 const SEC_KEY = process.env.SEC_KEY;
 
 const signUp = async (req, res, next) => {
-  console.log('signUp');
     try {
         const user = await Users.findUserByEmail(req.body.email);
     if (user) {
@@ -41,20 +40,55 @@ const logIn = async (req, res, next) => {
   }
 };
 
-// const logout = async (req, res, next) => {
-//     try {
-//     const data = await users.addContact(req.body);
-//     if (data) {
-//       return res.json({ status: 'succcess', code: 201, payload: { data } });
-//     };
-//     return res.status(404).json({ status: 'error', code: 404, message: 'Not found' });
-//   } catch (error) {
-//     next(error)
-//   }
-// };
+const logout = async (req, res, next) => {
+  try {
+      const id = req.user.id;
+      await Users.updateToken(id, null);
+      return res.status(HttpCode.NO_CONTENT).json({ });
+  } catch (error) {
+    next(error)
+  }
+};
+
+const currentUser = async (req, res, next) => {
+  try {
+    const token = await req.headers.authorization.split(' ')[1];
+    const { email, subscription } = await Users.findUserByToken(token);
+       if ( email && subscription ) {
+      return res.json({ status: 'succcess', code: 200, payload:  {email, subscription} });
+    };
+    return res.status(HttpCode.UNAUTHORIZED).json({ status: 'error', code: 404, message: 'Not authorized' });
+
+  } catch (error) {
+    next(error)
+  }
+};
+
+const getUpdateSubscription = async (req, res, next) => {
+
+       try {
+        const userId = res.locals.user.id
+        const data = await Users.updateSubscription( userId, req.body);
+        if (data) {
+            return res.json({ status: 'succcess', code: 200, payload: { data } });
+        };
+        return res.status(HttpCode.NOT_FOUND).json({ status: 'error', code: 404, message: 'Not found' });
+
+    } catch (error) {
+        next(error)
+    }
+};
 
 module.exports = {
     signUp,
     logIn,
-    // logout
+    logout,
+    currentUser,
+    getUpdateSubscription
 };
+
+// {
+//    "email": "example@example.com",
+//   "password": "examplepassword"
+// }
+
