@@ -36,7 +36,6 @@ const updateToken = async (id, token) => {
 };
 
 const findUserByToken = async (token) => {
-
   try {
     return await User.findOne({token});
   } catch (error) {

@@ -13,9 +13,7 @@ const userSchema = Schema({
     type: String,
     required: [true, 'Email is required'],
     unique: true,
-    // validate(value) {
-    //  const result = /\S+@/
-    // }
+
   },
   subscription: {
     type: String,

@@ -15,7 +15,6 @@ const addNewContact = async (req, res, next) => {
 };
 
 const getContactsList = async (req, res, next) => {
-    console.log(res.locals.user.id);
     try {
         const userId = res.locals.user.id;
         const {docs: data, ...rest} = await contacts.listContacts(userId, req.query);

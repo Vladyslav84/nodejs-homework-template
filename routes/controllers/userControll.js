@@ -22,7 +22,7 @@ const signUp = async (req, res, next) => {
 const logIn = async (req, res, next) => {
     try {
         const user = await Users.findUserByEmail(req.body.email);
-        const isValidPassword = await user?.isValidPassword(req.body.password);
+      const isValidPassword = await user?.isValidPassword(req.body.password);
 
     if (!user || !isValidPassword) {
         return res.status(HttpCode.UNAUTHORIZED)
@@ -42,7 +42,7 @@ const logIn = async (req, res, next) => {
 
 const logout = async (req, res, next) => {
   try {
-      const id = req.user.id;
+      const id = res.locals.user.id;
       await Users.updateToken(id, null);
       return res.status(HttpCode.NO_CONTENT).json({ });
   } catch (error) {
@@ -53,6 +53,7 @@ const logout = async (req, res, next) => {
 const currentUser = async (req, res, next) => {
   try {
     const token = await req.headers.authorization.split(' ')[1];
+    console.log(token);
     const { email, subscription } = await Users.findUserByToken(token);
        if ( email && subscription ) {
       return res.json({ status: 'succcess', code: 200, payload:  {email, subscription} });
@@ -87,8 +88,4 @@ module.exports = {
     getUpdateSubscription
 };
 
-// {
-//    "email": "example@example.com",
-//   "password": "examplepassword"
-// }
 
