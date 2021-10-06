@@ -56,11 +56,20 @@ try {
 
 };
 
+const updateAvatar = async (id, avatarURL, idCloudAvatar = null) => {
+  try {
+      return await User.updateOne({ _id: id }, {avatarURL, idCloudAvatar})
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 module.exports = {
     findUserById,
     findUserByEmail,
     createUser,
     updateToken,
     findUserByToken,
-    updateSubscription
+  updateSubscription,
+    updateAvatar
     };

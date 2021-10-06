@@ -3,7 +3,6 @@ const contacts = require('../../repositories/index');
 const addNewContact = async (req, res, next) => {
     try {
         const userId = res.locals.user.id;
-        console.log(userId);
     const data = await contacts.addContact(userId, req.body);
         if (data) {
          return res.json({ status: 'succcess', code: 201, payload: { data, } });

@@ -3,6 +3,10 @@ const app = require('../app');
 const uriDb = process.env.DB_HOST;
 // require('dotenv').config();
 const PORT = process.env.PORT || 3000;
+const TMP_DIR = process.env.TMP_DIR;
+require('dotenv').config();
+const createFolderIsNotExist = require('../helpers/createFolder');
+
 
 mongoose.connect(uriDb, {
     // promiseLibrary: global.Promise,
@@ -11,7 +15,8 @@ mongoose.connect(uriDb, {
     useUnifiedTopology: true,
     // useFindAndModify: false,
 }).then(() => {
-    app.listen(PORT, () => {
+    app.listen(PORT, async () => {
+        await createFolderIsNotExist(TMP_DIR);
   console.log(`Server running. Use our API on port: ${PORT}`);
 });
 }).catch((e) => {

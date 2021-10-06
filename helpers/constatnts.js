@@ -1,5 +1,4 @@
 
-
 const Subscription = {
     STARTER: "starter",
     PRO: "pro",
