@@ -6,7 +6,7 @@ require('dotenv').config();
 const SEC_KEY = process.env.SEC_KEY;
 // const AVATARS_DIR = process.env.AVATARS_DIR;
 // const UploadAvatarService = require('../../service/localUpload');
-// const fs = require('fs/promises');
+const fs = require('fs/promises');
 // const path = require('path');
 const UploadCloudinary = require('../../service/cloudUpload');
 
@@ -113,9 +113,10 @@ try {
   const id = res.locals.user.id;
     const uploads = new UploadCloudinary();
   const { idCloudAvatar, avatarURL } = await uploads.saveAvatar(
-    req.file.path,
+        req.file.path,
     res.locals.user.idCloudAvatar
   );
+  await fs.unlink(req.file.path); // чистимо папку tmp
   await Users.updateAvatar(id, avatarURL, idCloudAvatar);
   return res.json({ status: 'succcess', code: 200, payload: { avatarURL } });
   } catch (error) {

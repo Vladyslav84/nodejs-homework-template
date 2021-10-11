@@ -26,8 +26,7 @@ const HttpCode = {
                 code: HttpCode.TOO_MANY_REQUEST,
                 message: "Too many requests, please try again later."
             });
-    
-  }
+     }
 }
 module.exports = {Subscription, HttpCode, limiterApi};
 

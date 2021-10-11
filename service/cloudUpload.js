@@ -11,17 +11,10 @@ cloudinary.config({
     api_secret: API_CLOUD_SECRET,
 });
 
-const uploadCloud = promisify(cloudinary.uploader.upload)
+const uploadCloud = promisify(cloudinary.uploader.upload);
 
 class UploadCloudinary {    
     async saveAvatar(pathFile, oldCloudAvatar) {
-        // const data = await uploadCloud(pathFile, {
-        //     public_id: oldCloudAvatar?.replace("CloudAvatar/", ''),
-        //     folder: "CloudAvatar",
-        //     transformation: { width: 250, height: 250, crop: "pad" },
-        // });
-        // console.log(data);
-
         const { public_id: idCloudAvatar , secure_url: avatarURL } = await uploadCloud(pathFile, {
             public_id: oldCloudAvatar?.replace("CloudAvatar/", ''),
             folder: "CloudAvatar",

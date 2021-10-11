@@ -9,7 +9,7 @@ const upload = require('../../../helpers/uploadsMiddleware');
 router.post('/singup', validation(userSchemaVal), controllers.signUp);
 router.post('/login', validation(userSchemaVal), controllers.logIn);
 router.post('/logout',guard, controllers.logout);
-router.get('/current', controllers.currentUser);
+router.get('/current',guard, controllers.currentUser);
 router.patch('/', guard, controllers.getUpdateSubscription);
 router.patch('/avatars', guard,upload.single('avatar'), controllers.avatars);
 

@@ -3,7 +3,7 @@ require('../config/passport');
 const { HttpCode } = require('./constatnts');
 
 const guard = (req, res, next) => {
-    passport.authenticate('jwt', { session: false }, (err, user) => {
+        passport.authenticate('jwt', { session: false }, (err, user) => {
         const headerAuth = req.get("Authorization")
         let token = null;
         if (headerAuth) {
@@ -16,12 +16,10 @@ const guard = (req, res, next) => {
                 message: "Not authorized guard"
             });
         }
-          
-        res.locals.user = user; // req.user = user; так зазвичай роблять. 
+            res.locals.user = user; // req.user = user; так зазвичай роблять. 
         return next();
         
     })(req, res, next)
-       
 };
 
 module.exports = guard;

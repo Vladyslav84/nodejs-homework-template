@@ -3,12 +3,13 @@ const Contact = require('../model/schema');
 const listContacts = async (userId, query) => {
   try {
 
-    const {sortBy,sortBydesc, filter, favorite = null, limit=20, page = 1 } = query;
+    const {sortBy,sortBydesc, filter, favorite = null, limit=5, page = 1 } = query;
     const optionSearch = { owner: userId };
     if (favorite !== null) {
       optionSearch.favorite = favorite;
-    }
+    };
     const resultList = await Contact.paginate(optionSearch, {
+     
       limit,
       page,
       sort: {
