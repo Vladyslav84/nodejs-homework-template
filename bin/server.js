@@ -30,7 +30,7 @@ const db = mongoose.connect(uriDb, {
 })
 
 mongoose.connection.on('connected', () => {
-    console.log("Connection open");
+    // console.log("Connection open");
 });
 
 mongoose.connection.on('error', (e) => {

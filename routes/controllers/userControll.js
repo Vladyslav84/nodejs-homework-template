@@ -118,7 +118,7 @@ try {
   );
   await fs.unlink(req.file.path); // чистимо папку tmp
   await Users.updateAvatar(id, avatarURL, idCloudAvatar);
-  return res.json({ status: 'succcess', code: 200, payload: { avatarURL } });
+  return res.status(HttpCode.OK).json({ status: 'succcess', code: 200, payload: { avatarURL } });
   } catch (error) {
   next(error)
 }

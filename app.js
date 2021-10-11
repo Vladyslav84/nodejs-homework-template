@@ -13,6 +13,7 @@ const boolParser = require('express-query-boolean');
 const AVATARS_DIR = process.env.AVATARS_DIR;
 require('dotenv').config();
 const path = require('path');
+const fs = require('fs/promises');
 
 app.use(helmet());
 app.use(express.static(path.join(__dirname, AVATARS_DIR)));
@@ -23,6 +24,8 @@ app.use(boolParser()); // обов'зково після express.json
 app.use('/api/', rateLimit(limiterApi))
 app.use('/api/users', usersRouter);
 app.use('/api/contacts', contactsRouter);
+// const buf = fs.readFile('./tmp/1633528821009-avatar.png').then((dar) => console.log(dar))
+// console.log(buf);
 
 app.use((req, res) => {
   res.status(404).json({ status: 'error', code: 404, message: 'Not found app' })
