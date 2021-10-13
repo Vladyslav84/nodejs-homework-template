@@ -3,6 +3,7 @@ const { Subscription } = require('../helpers/constatnts');
 const gravatar = require('gravatar');
 const bcrypt = require('bcryptjs');
 const SALT = 8;
+const {nanoid} = require('nanoid')
 
 const userSchema = Schema({
 
@@ -34,6 +35,15 @@ const userSchema = Schema({
   idCloudAvatar: {
     type: String,
     default: null
+  },
+  isVerified: {
+    type: Boolean,
+    default: false
+  },
+  verifyToken: {
+    type: String,
+    required: true,
+    default: nanoid()
   }
 
 }, { versionKey: false, timestamps: true });

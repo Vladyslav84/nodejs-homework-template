@@ -15,9 +15,9 @@ const createFolderIsNotExist = require('../helpers/createFolder');
 const db = mongoose.connect(uriDb, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  useCreateIndex: true,
-  useFindAndModify: false,
-  poolSize: 5,
+//   useCreateIndex: true,
+//   useFindAndModify: false,
+//   poolSize: 5,
 });
     db.then(() => {
     app.listen(PORT, async () => {
@@ -30,11 +30,11 @@ const db = mongoose.connect(uriDb, {
 })
 
 mongoose.connection.on('connected', () => {
-    // console.log("Connection open");
+    console.log("Connection open");
 });
 
 mongoose.connection.on('error', (e) => {
-    // console.log(`Error ${e.message}`);
+    console.log(`Error ${e.message}`);
 });
 
 mongoose.connection.on('disconnected', (e) => {

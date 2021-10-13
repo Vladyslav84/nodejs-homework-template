@@ -9,7 +9,8 @@ const SEC_KEY = process.env.SEC_KEY;
 const fs = require('fs/promises');
 // const path = require('path');
 const UploadCloudinary = require('../../service/cloudUpload');
-
+const EmailServie = require('../../service/email');
+const CreateSender = require('../../service/email_sender');
 
 
 const signUp = async (req, res, next) => {
@@ -18,7 +19,14 @@ const signUp = async (req, res, next) => {
     if (user) {
       return res.status(HttpCode.CONFLICT).json({ status: 'error', code: HttpCode.CONFLICT, message: 'Email in use' });
         };
-        const {id, email, subscription, avatarURL} = await Users.createUser(req.body);
+      const { id,name, email, subscription, avatarURL, verifyToken } = await Users.createUser(req.body);
+      
+      try {
+        const emailService = new EmailServie(process.env.NODE_ENV, new CreateSender())
+        await emailService.sendVerifyEmail(verifyToken, email, name)
+      } catch (error) {
+        console.log(error.message);
+      }
         return res.status(HttpCode.CREATED).json({ status: 'succes', code: HttpCode.CREATED, id, email, subscription, avatarURL });
 
   } catch (error) {
@@ -31,7 +39,7 @@ const logIn = async (req, res, next) => {
         const user = await Users.findUserByEmail(req.body.email);
       const isValidPassword = await user?.isValidPassword(req.body.password);
 
-    if (!user || !isValidPassword) {
+    if (!user || !isValidPassword || !user.isVerified) {
         return res.status(HttpCode.UNAUTHORIZED)
             .json({ status: 'error', code: HttpCode.CONFLICT, message: 'Email or password is wrong' });
       };
@@ -104,7 +112,7 @@ const getUpdateSubscription = async (req, res, next) => {
 //   } catch (error) {
 //   next(error)
 // }
-// };
+// };Verification email sent
 
 // for cloud upload
 
@@ -124,13 +132,62 @@ try {
 }
 };
 
+const repeatEmailVerification = async (req, res, next) => {
+  try {
+    const user = await Users.findUserByEmail(req.body.email);
+    if (user) {
+      const { name, email, isVerified, verifyToken } = user;
+      if (!isVerified) {
+        const emailService = new EmailServie(process.env.NODE_ENV, new CreateSender());
+        await emailService.sendVerifyEmail(verifyToken, email, name);
+        return res.status(HttpCode.OK).json({
+          status: 'succes',
+          code: HttpCode.OK,
+          payload: { message: "Resubmitted success" }
+        });
+      } 
+      return res.status(HttpCode.CONFLICT).json({
+        status: 'error',
+        code: HttpCode.CONFLICT,
+        message: 'Email has been verified'
+      });
+    }
+    return res.status(HttpCode.NOT_FOUND).json({ status: 'error', code: 404, message: 'Not found' });
+  } catch (error) {
+    next(error)
+  }
+};
+const verify = async (req, res, next) => {
+ try {
+   const user = await Users.findUserByVerifyToken(req.params.token);
+   if (user) {
+     await Users.updateVerifyToken(user.id, true, null);
+     return res.status(HttpCode.OK).json({
+       status: 'succcess',
+       code: HttpCode.OK,
+       payload: { message: "Success" }
+     });
+   }
+   return res.status(HttpCode.BAD_REQUEST).json({
+     status: 'error',
+     code: HttpCode.BAD_REQUEST,
+     payload: { message: "Ошибка от Joi или другой библиотеки валидации" }
+   })
+ } catch (error) {
+   next(error);
+ }
+ };
+
 module.exports = {
     signUp,
     logIn,
     logout,
     currentUser,
   getUpdateSubscription,
-    avatars
+  avatars,
+  verify,
+  repeatEmailVerification
+    
 };
 
 

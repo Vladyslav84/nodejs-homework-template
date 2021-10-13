@@ -17,6 +17,15 @@ const findUserByEmail = async (email) => {
   }
 };
 
+const findUserByVerifyToken = async (verifyToken) => {
+
+  try {
+    return await User.findOne({verifyToken});
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
 const createUser = async (body) => {
 
   try {
@@ -30,6 +39,14 @@ const createUser = async (body) => {
 const updateToken = async (id, token) => {
   try {
       return await User.updateOne({ _id: id }, {token})
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+const updateVerifyToken = async (id, isVerified, verifyToken) => {
+  try {
+      return await User.updateOne({ _id: id }, {isVerified, verifyToken})
   } catch (error) {
     console.log(error.message);
   }
@@ -71,5 +88,7 @@ module.exports = {
     updateToken,
     findUserByToken,
   updateSubscription,
-    updateAvatar
+  updateAvatar,
+  findUserByVerifyToken,
+    updateVerifyToken
     };
