@@ -159,7 +159,8 @@ const repeatEmailVerification = async (req, res, next) => {
 };
 const verify = async (req, res, next) => {
  try {
-   const user = await Users.findUserByVerifyToken(req.params.token);
+   const user = await Users.findUserByVerifyToken(req.params.verifyToken);
+   console.log(user);
    if (user) {
      await Users.updateVerifyToken(user.id, true, null);
      return res.status(HttpCode.OK).json({
